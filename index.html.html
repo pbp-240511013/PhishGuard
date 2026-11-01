@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard - Cyber Security</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #080817;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background: #0d0b20;
+            border-right: 1px solid #292044;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 55px;
+            color: #ff3b9d;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #c7bfdc;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: linear-gradient(90deg, #e90070, #41145e);
+            color: white;
+            box-shadow: 0 0 20px #e9007040;
+        }
+
+        .sidebar-card {
+            margin-top: 100px;
+            padding: 20px;
+            border: 1px solid #d82c91;
+            border-radius: 18px;
+            text-align: center;
+            background: linear-gradient(145deg, #25113d, #100d27);
+            color: #e6d8f8;
+        }
+
+        .sidebar-card h3 {
+            color: #ff3b9d;
+            margin-bottom: 10px;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+            width: calc(100% - 250px);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar p {
+            color: #aaa1c8;
+            font-size: 14px;
+        }
+
+        .status {
+            background: #211638;
+            color: #ff62ad;
+            border: 1px solid #77265d;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 260px;
+            border-radius: 25px;
+            padding: 45px;
+            background:
+                radial-gradient(circle at 85% 30%, #8d145c 0%, transparent 35%),
+                linear-gradient(120deg, #211039, #10102c 65%, #310c36);
+            border: 1px solid #75245f;
+            box-shadow: 0 0 30px #ed168b18;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 43px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #ff329b;
+        }
+
+        .hero p {
+            color: #c8badc;
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 18px;
+            border: 1px solid #e72d91;
+            border-radius: 30px;
+            color: #ff6ab5;
+            font-size: 13px;
+        }
+
+        .hero-decoration {
+            position: absolute;
+            right: 60px;
+            top: 35px;
+            font-size: 115px;
+            filter: drop-shadow(0 0 25px #ff168f);
+        }
+
+        /* DETECTION */
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .scan-box {
+            background: linear-gradient(145deg, #17142f, #100e25);
+            border: 1px solid #74306e;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 25px #ed168b12;
+        }
+
+        .scan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .scan-header h2 {
+            font-size: 20px;
+        }
+
+        .example-btn {
+            background: transparent;
+            border: 1px solid #a22b81;
+            color: #ff78c1;
+            padding: 9px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            height: 125px;
+            resize: vertical;
+            background: #211b3d;
+            border: 1px solid #443364;
+            border-radius: 12px;
+            padding: 18px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #ff329b;
+            box-shadow: 0 0 12px #ff329b30;
+        }
+
+        textarea::placeholder {
+            color: #9286ac;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #ff278c, #a400a9);
+            box-shadow: 0 0 20px #f7258a35;
+            transition: 0.3s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px #ff278c80;
+        }
+
+        /* RESULT */
+        #result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #211b3d;
+            border-radius: 12px;
+            border: 1px solid #74306e;
+            line-height: 1.8;
+        }
+
+
+
+        /* SECURITY GUIDE */
+        .guide-intro {
+            color: #c8badc;
+            line-height: 1.7;
+            margin: -8px 0 20px;
+        }
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        .guide-card {
+            background: linear-gradient(145deg, #1c1736, #100e25);
+            border: 1px solid #38265d;
+            padding: 22px;
+            border-radius: 17px;
+        }
+        .guide-card h3 {
+            color: #ff78c1;
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+        .guide-card p, .guide-card li {
+            color: #c7bfdc;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        .guide-card ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        .guide-warning {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border: 1px solid #a22b81;
+            background: #211638;
+            border-radius: 12px;
+            color: #f0d9eb;
+            line-height: 1.7;
+        }
+
+        /* HISTORY */
+        .history-box {
+            background: linear-gradient(145deg, #17142f, #100e25);
+            border: 1px solid #74306e;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 0 25px #ed168b12;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        .clear-history-btn {
+            background: transparent;
+            border: 1px solid #a22b81;
+            color: #ff78c1;
+            padding: 9px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .history-item {
+            background: #211b3d;
+            border: 1px solid #443364;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            overflow-wrap: anywhere;
+        }
+        .history-item p {
+            color: #c7bfdc;
+            margin-top: 7px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        .history-status { font-weight: bold; }
+        .empty-history {
+            color: #aaa1c8;
+            text-align: center;
+            padding: 22px 10px;
+        }
+
+        /* FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, #1c1736, #100e25);
+            border: 1px solid #38265d;
+            padding: 22px;
+            border-radius: 17px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: #ff329b;
+            transform: translateY(-5px);
+        }
+
+        .feature-card .icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 12px;
+            color: #aaa1c8;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid #302044;
+            padding: 20px 0;
+            color: #9286ac;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media(max-width: 1000px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-decoration {
+                opacity: 0.3;
+            }
+        }
+
+        @media(max-width: 650px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .container {
+                display: block;
+            }
+
+            .sidebar-card {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .hero {
+                padding: 28px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-decoration {
+                display: none;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div class="logo">🛡️ Phish<span>Guard</span></div>
+
+        <nav class="menu">
+            <a href="#" class="active">⌂ &nbsp; Beranda</a>
+            <a href="#deteksi">⌕ &nbsp; Deteksi Pesan</a>
+            <a href="#panduan">▤ &nbsp; Panduan Keamanan</a>
+            <a href="#riwayat">◷ &nbsp; Riwayat</a>
+            <a href="#tentang">ⓘ &nbsp; Tentang Kami</a>
+        </nav>
+
+        <div class="sidebar-card">
+            <h3>🛡️ Stay Protected</h3>
+            <p>Bersama PhishGuard, lebih aman menjelajahi dunia digital!</p>
+            <br>
+            <span>♥</span>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Selamat datang di PhishGuard Security System</p>
+            </div>
+
+            <div class="status">● Protection Active</div>
+        </div>
+
+        <section class="hero">
+            <h1>Phish<span>Guard</span></h1>
+
+            <p>
+                Kenali pesan phishing sebelum kamu terjebak
+                dalam tautan berbahaya. Lindungi informasi
+                dan keamanan digitalmu.
+            </p>
+
+            <div class="hero-tag">
+                🛡️ &nbsp; Detect · Protect · Stay Safe
+            </div>
+
+            <div class="hero-decoration">🛡️</div>
+        </section>
+
+        <section id="deteksi">
+
+            <h2 class="section-title">⌕ &nbsp; Deteksi Pesan</h2>
+
+            <div class="scan-box">
+
+                <div class="scan-header">
+                    <h2>Analisis Pesan</h2>
+
+                    <button class="example-btn"
+                        onclick="isiContoh()">
+                        ✨ Contoh Pesan
+                    </button>
+                </div>
+
+                <textarea id="pesan"
+                    placeholder="Tempelkan isi pesan yang ingin diperiksa di sini..."></textarea>
+
+                <button class="analyze-btn"
+                    onclick="analisisPesan()">
+                    ⌕ &nbsp; Analisis Pesan
+                </button>
+
+                <div id="result"></div>
+
+            </div>
+
+        </section>
+
+        <section id="fitur">
+
+            <h2 class="section-title" style="margin-top:30px">
+                Fitur Unggulan
+            </h2>
+
+            <div class="features">
+
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3>Deteksi Phishing</h3>
+                    <p>Mengenali pesan yang memiliki indikasi phishing.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon">🔗</div>
+                    <h3>Pemeriksaan URL</h3>
+                    <p>Membantu memeriksa tautan yang mencurigakan.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon">🛡️</div>
+                    <h3>Panduan Keamanan</h3>
+                    <p>Pelajari cara melindungi diri dari ancaman siber.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon">◷</div>
+                    <h3>Riwayat Pemeriksaan</h3>
+                    <p>Melihat hasil pemeriksaan sebelumnya.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="panduan">
+            <h2 class="section-title" style="margin-top:30px">▤ &nbsp; Panduan Keamanan</h2>
+            <p class="guide-intro">
+                Kenali ciri-ciri pesan phishing dan lakukan langkah sederhana berikut
+                agar informasi pribadi tetap terlindungi.
+            </p>
+
+            <div class="guide-grid">
+                <div class="guide-card">
+                    <h3>🔎 1. Periksa Pengirim</h3>
+                    <p>Waspadai pesan dari nomor, alamat email, atau akun yang tidak dikenal,
+                    terutama jika mengaku sebagai bank, layanan digital, atau pihak resmi.</p>
+                </div>
+
+                <div class="guide-card">
+                    <h3>🔗 2. Periksa Tautan</h3>
+                    <p>Jangan langsung membuka tautan dari pesan yang tidak terduga.
+                    Perhatikan nama domain dan ejaan alamat situs sebelum mengunjunginya.</p>
+                </div>
+
+                <div class="guide-card">
+                    <h3>⚠️ 3. Kenali Pesan Mendesak</h3>
+                    <p>Pesan phishing sering mencoba membuat penerima panik atau terburu-buru,
+                    misalnya dengan ancaman pemblokiran akun atau iming-iming hadiah.</p>
+                </div>
+
+                <div class="guide-card">
+                    <h3>🔐 4. Jaga Data Pribadi</h3>
+                    <p>Jangan membagikan password, PIN, maupun kode OTP melalui pesan,
+                    tautan, atau kepada orang yang tidak dapat dipastikan identitasnya.</p>
+                </div>
+
+                <div class="guide-card">
+                    <h3>📱 5. Verifikasi Informasi</h3>
+                    <p>Jika pesan mengatasnamakan suatu instansi atau layanan, hubungi
+                    pihak tersebut melalui aplikasi atau situs resmi yang kamu ketik sendiri.</p>
+                </div>
+
+                <div class="guide-card">
+                    <h3>🛡️ 6. Jika Terlanjur Mengklik</h3>
+                    <ul>
+                        <li>Jangan mengisi data pribadi atau kode OTP.</li>
+                        <li>Tutup halaman yang mencurigakan.</li>
+                        <li>Jika memasukkan password, segera ubah melalui situs resmi.</li>
+                        <li>Aktifkan autentikasi dua faktor jika tersedia.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="guide-warning">
+                <b>Ingat:</b> PhishGuard memberikan pemeriksaan awal berdasarkan pola pesan.
+                Hasil yang tidak menunjukkan indikasi kuat bukan jaminan bahwa pesan atau
+                tautan tersebut aman. Tetap periksa sumber pesan sebelum mengambil tindakan.
+            </div>
+        </section>
+
+        <section id="riwayat">
+            <h2 class="section-title" style="margin-top:30px">◷ &nbsp; Riwayat Pemeriksaan</h2>
+            <div class="history-box">
+                <div class="history-header">
+                    <h2>Riwayat Deteksi</h2>
+                    <button class="clear-history-btn" onclick="hapusRiwayat()">Hapus Riwayat</button>
+                </div>
+                <div id="daftarRiwayat">
+                    <p class="empty-history">Belum ada riwayat pemeriksaan.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer id="tentang">
+            <span>🛡️ PhishGuard</span>
+            <span>© 2026 PhishGuard. Stay Safe Online.</span>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script>
+const KUNCI_RIWAYAT = "phishguard_riwayat";
+
+function isiContoh() {
+    document.getElementById("pesan").value =
+    "Selamat! Anda mendapatkan hadiah 10 juta rupiah. Segera klaim hadiah Anda melalui https://hadiah-gratis.example";
+}
+
+function ambilRiwayat() {
+    try {
+        return JSON.parse(localStorage.getItem(KUNCI_RIWAYAT)) || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function simpanRiwayat(data) {
+    const riwayat = ambilRiwayat();
+    riwayat.unshift(data);
+    localStorage.setItem(KUNCI_RIWAYAT, JSON.stringify(riwayat.slice(0, 50)));
+    tampilkanRiwayat();
+}
+
+function tampilkanRiwayat() {
+    const daftar = document.getElementById("daftarRiwayat");
+    if (!daftar) return;
+
+    const riwayat = ambilRiwayat();
+    if (riwayat.length === 0) {
+        daftar.innerHTML = '<p class="empty-history">Belum ada riwayat pemeriksaan.</p>';
+        return;
+    }
+
+    daftar.innerHTML = riwayat.map(item => `
+        <div class="history-item">
+            <div class="history-status" style="color:${item.warna}">${item.status}</div>
+            <p><b>Waktu:</b> ${item.waktu}</p>
+            <p><b>Jumlah tautan:</b> ${item.jumlahTautan}</p>
+            <p><b>Pesan:</b> ${escapeHTML(item.pesan)}</p>
+        </div>
+    `).join("");
+}
+
+function escapeHTML(teks) {
+    return teks.replace(/[&<>"']/g, karakter => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#039;"
+    })[karakter]);
+}
+
+function hapusRiwayat() {
+    const yakin = confirm("Apakah kamu yakin ingin menghapus semua riwayat pemeriksaan?");
+    if (!yakin) return;
+    localStorage.removeItem(KUNCI_RIWAYAT);
+    tampilkanRiwayat();
+}
+
+function analisisPesan() {
+    const pesan = document.getElementById("pesan").value.trim();
+    const result = document.getElementById("result");
+
+    if (pesan === "") {
+        alert("Silakan masukkan pesan terlebih dahulu!");
+        return;
+    }
+
+    const urls = pesan.match(/https?:\/\/[^\s]+|www\.[^\s]+/gi) || [];
+
+    const kataMencurigakan = [
+        "hadiah", "menang", "pemenang", "klaim", "verifikasi",
+        "transfer", "rekening", "password", "kata sandi",
+        "akun diblokir", "segera", "gratis", "kode otp", "pin"
+    ];
+
+    const teks = pesan.toLowerCase();
+    let alasan = [];
+    let skor = 0;
+
+    kataMencurigakan.forEach(kata => {
+        if (teks.includes(kata)) {
+            alasan.push("Mengandung kata atau frasa: " + kata);
+            skor += 1;
+        }
+    });
+
+    if (urls.length > 0) {
+        alasan.push("Pesan mengandung " + urls.length + " tautan.");
+    } else {
+        alasan.push("Tidak ditemukan tautan dalam pesan.");
+    }
+
+    urls.forEach(url => {
+        const link = url.toLowerCase();
+
+        if (link.startsWith("http://")) {
+            alasan.push("Tautan menggunakan HTTP yang tidak terenkripsi.");
+            skor += 1;
+        }
+        if (/bit\.ly|tinyurl\.com|t\.co|shorturl\.at/.test(link)) {
+            alasan.push("Menggunakan layanan pemendek URL.");
+            skor += 2;
+        }
+        if (/https?:\/\/\d{1,3}(\.\d{1,3}){3}/.test(link)) {
+            alasan.push("Alamat tautan menggunakan alamat IP langsung.");
+            skor += 2;
+        }
+        if (link.includes("@")) {
+            alasan.push("Tautan mengandung karakter @ yang perlu diperiksa.");
+            skor += 1;
+        }
+    });
+
+    let status;
+    let warna;
+
+    if (skor >= 2) {
+        status = "TERINDIKASI MENCURIGAKAN";
+        warna = "#ff4d91";
+    } else if (urls.length > 0) {
+        status = "PERLU DIPERIKSA LEBIH LANJUT";
+        warna = "#ffc857";
+    } else {
+        status = "BELUM DITEMUKAN INDIKASI KUAT";
+        warna = "#45d6a0";
+    }
+
+    result.style.display = "block";
+    result.innerHTML = `
+        <h3 style="color:${warna}; margin-bottom:12px;">${status}</h3>
+        <p><b>Jumlah tautan:</b> ${urls.length}</p>
+        <p style="margin-top:12px;"><b>Hasil pemeriksaan:</b></p>
+        <ul style="padding-left:20px; margin-top:8px;">
+            ${alasan.map(item => `<li>${escapeHTML(item)}</li>`).join("")}
+        </ul>
+        <p style="margin-top:15px; color:#c5b8df;">
+            Catatan: Hasil ini merupakan pemeriksaan awal berbasis aturan,
+            bukan jaminan bahwa pesan aman atau berbahaya.
+        </p>
+    `;
+
+    simpanRiwayat({
+        pesan: pesan,
+        status: status,
+        warna: warna,
+        jumlahTautan: urls.length,
+        waktu: new Date().toLocaleString("id-ID")
+    });
+}
+
+document.addEventListener("DOMContentLoaded", tampilkanRiwayat);
+tampilkanRiwayat();
+</script>
+
+
+</body>
+</html>
